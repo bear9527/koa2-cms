@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  {% include 'common/header.html' %}
+
+  {% block header %}<h3>Unnamed</h3>{% endblock %}
+  <h1>{{name}}</h1>
+  <form action="/signin" method="post">
+  <p>Name: <input name="name" value="koa"></p>
+  <p>Password: <input name="password" type="password"></p>
+  <p><input type="submit" value="Submit"></p>
+</form>
+
+{% block footer %}{% endblock %}
+{% include 'common/footer.html' %}

@@ -1,0 +1,1 @@
+{"version":3,"file":"mysql.config.js","sourceRoot":"","sources":["../../src/db/mysql.config.ts"],"names":[],"mappings":";AAAA,MAAM,WAAW,GAAG;IAClB,IAAI,EAAE,WAAW;IACjB,iBAAiB;IACjB,IAAI,EAAE,MAAM;IACZ,QAAQ,EAAE,UAAU;IACpB,QAAQ,EAAE,UAAU;IACpB,IAAI,EAAE,IAAI;CACX,CAAA;AAED,MAAM,CAAC,OAAO,GAAG,WAAW,CAAA"}
