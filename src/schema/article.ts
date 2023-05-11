@@ -24,7 +24,9 @@ const articleCategorySchema = joi.object({
 const editCategorySchema = joi.object({
   id: id,
   name: categoryName,
+  cate_id: id,
   alias: categoryAlias,
+  img: article_pic,
 });
 
 // 删除分类

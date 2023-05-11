@@ -29,12 +29,13 @@ const addCategory = async (ctx, next) => {
 };
 // 修改分类
 const editCategory = async (ctx, next) => {
-    const { id, name, alias } = ctx.request.body;
+    const { id, name, alias, cate_id, img } = ctx.request.body;
+    console.log('cate_id', cate_id);
     const cateReapeatRes = await query(GET_REPEAT("ev_article_cate", "id"), id);
     if (cateReapeatRes.length === 0) {
         return ctx.cc("未找到目标分类！");
     }
-    const cateEditRes = await query(INSERT_DATA("ev_article_cate ", "name, alias", `'${name}', '${alias}'`));
+    const cateEditRes = await query(INSERT_DATA("ev_article_cate ", "name, alias, cate_id, img", `'${name}', '${alias}', '${cate_id}', '${img}'`));
     if (cateEditRes.affectedRows === 1) {
         return ctx.cc("修改成功", 0);
     }

@@ -39,6 +39,7 @@ var INSERT_DATAS = (tableName: string, values: string) =>
 //(3) 插入数据(部分列)
 var INSERT_DATA = (tableName: string, colums: string, values: string) =>
   `INSERT INTO ${tableName}(${colums}) VALUES (${values});`;
+  
 //(4) 删除数据(根据id)
 var DELETE_DATA_BY_ID = (tableName: string, id: string) =>
   `DELETE FROM ${tableName} WHERE id = ${id};`;
@@ -47,6 +48,9 @@ var DELETE_DATAS = (tableName: string) => `DELETE FROM ${tableName};`;
 //(6) 更新数据条目
 var UPDATE_DATA = (tableName: string, id: string, colum: string, value: string) =>
   `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
+
+  var UPDATE_DATA9 = (tableName: string,colum: string, value: string,id: number) =>
+  `UPDATE ${tableName} SET ${colum} = '${value}' WHERE id = ${id};`;
 //(7) 新增表里的行
 const INSERT_DATA_ROW = (tableName: string) => `INSERT INTO ${tableName} SET ?`;
 /************************查询操作相关************************
@@ -105,6 +109,7 @@ module.exports = {
   LOGIN,
   GET_REPEAT,
   SAVE_USER,
-  UPDATE_USER_INFO
+  UPDATE_USER_INFO,
+  UPDATE_DATA9
 };
 // export {}

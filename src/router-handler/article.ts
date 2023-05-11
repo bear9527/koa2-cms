@@ -5,6 +5,7 @@ const {
   INSERT_DATA,
   UPDATE_DATA,
   GET_TABLE_INFO,
+  UPDATE_DATA9,
 } = require("../db/sql");
 // 新增分类
 const addCategory = async (ctx: any, next: any) => {
@@ -42,15 +43,20 @@ const addCategory = async (ctx: any, next: any) => {
 
 // 修改分类
 const editCategory = async (ctx: any, next: any) => {
-  const { id, name, alias } = ctx.request.body;
-
+  const { id } = ctx.request.body; //, alias, cate_id, img, name
   const cateReapeatRes = await query(GET_REPEAT("ev_article_cate", "id"), id);
   if (cateReapeatRes.length === 0) {
     return ctx.cc("未找到目标分类！");
   }
 
+  // var UPDATE_DATA = (tableName: string, id: string, colum: string, value: string) =>
+  // `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
+console.log('111',UPDATE_DATA9("ev_article_cate" ,"name","ddd",18));
+
   const cateEditRes = await query(
-    INSERT_DATA("ev_article_cate ", "name, alias", `'${name}', '${alias}'`)
+    // UPDATE_DATA("ev_article_cate ", "name, alias, cate_id, img", `'${name}', '${alias}', '${cate_id}', '${img}'`)
+    UPDATE_DATA9("ev_article_cate" ,"name","ddd",18)
+    // UPDATE_DATA("ev_article_cate ", id ,`name`,name)
   );
   if (cateEditRes.affectedRows === 1) {
     return ctx.cc("修改成功", 0);

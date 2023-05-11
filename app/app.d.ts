@@ -1,5 +1,5 @@
 declare const Koa: any;
-declare const bodyParser: any;
+declare const koabody: any;
 declare const userRouter: any;
 declare const nunjucks: any;
 declare const path: any;
@@ -7,3 +7,4 @@ declare const cors: any;
 declare const koaJwt: any;
 declare const config: any;
 declare const app: any;
+declare const koaStatic: any;

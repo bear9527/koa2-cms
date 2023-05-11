@@ -12,7 +12,8 @@ const upload = async (ctx: any, next: any) => {
     
     ctx.body = {
       name, // 文件名称
-      url: `${ctx.origin}/uploads/${basename}`, // 路径
+      // url: `${ctx.origin}/uploads/${basename}`, // 路径
+      url: `/uploads/${basename}`, // 路径
       path: `/uploads/${basename}`, // 路径
       origin: ctx.origin,
       size, // 文件大小

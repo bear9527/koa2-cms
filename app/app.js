@@ -1,6 +1,6 @@
 "use strict";
 const Koa = require("koa");
-const bodyParser = require("koa-bodyparser");
+const koabody = require("koa-body");
 // const controller = require("./controller")
 const userRouter = require("./router/index");
 const nunjucks = require("koa-nunjucks-2");
@@ -15,15 +15,15 @@ app.use(nunjucks({
     path: path.join(__dirname, "views"),
     nunjucksConfig: {
         trimBlocks: true,
-        watch: true
-    }
+        watch: true,
+    },
 }));
 app.use(async (ctx, next) => {
     console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     ctx.cc = (err, status = 1) => {
         ctx.response.body = {
             status: status,
-            message: err instanceof Error ? err.message : err
+            message: err instanceof Error ? err.message : err,
         };
     };
     await next().catch((err) => {
@@ -31,22 +31,30 @@ app.use(async (ctx, next) => {
             ctx.status = 401;
             ctx.body = {
                 code: 401,
-                message: 'Protected resource, use Authorization header to get access\n'
+                message: "Protected resource, use Authorization header to get access\n",
             };
         }
         else {
             ctx.status = err.status || 500;
-            console.log('err', err);
+            console.log("err", err);
             ctx.body = Object.assign({
                 code: 500,
-                message: err.message
-            }, process.env.NODE_ENV === 'development' ? { stack: err.stack } : {});
+                message: err.message,
+            }, process.env.NODE_ENV === "development" ? { stack: err.stack } : {});
         }
     });
     // ctx.response.status = 403;
 });
-app.use(bodyParser());
-app.use(koaJwt({ secret: config.jwtSecretKey }).unless({ path: [/^\/user/] }));
+app.use(koabody({
+    multipart: true,
+    formidable: {
+        uploadDir: path.join(__dirname, "/public/uploads"),
+        keepExtensions: true, //保留拓展名
+    },
+}));
+const koaStatic = require('koa-static');
+app.use(koaStatic(path.join(__dirname, 'public')));
+app.use(koaJwt({ secret: config.jwtSecretKey }).unless({ path: [/^\/user/, /^\/public/] }));
 // app.use(controller())
 // app.use(userRouter.routes()); // 启动路由
 userRouter(app);
