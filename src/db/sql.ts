@@ -2,7 +2,8 @@
  * 数据库操作相关 DDL
  *************************************************************/
 //(1) 创建数据库
-const CREATE_DB = (dbName: string) => `CREATE DATABASE IF NOT EXISTS ${dbName};`;
+const CREATE_DB = (dbName: string) =>
+  `CREATE DATABASE IF NOT EXISTS ${dbName};`;
 //(2) 查询所有数据库
 const SHOW_ALL_DB = `SHOW DATABASES`;
 //(3) 删除数据库
@@ -39,18 +40,24 @@ var INSERT_DATAS = (tableName: string, values: string) =>
 //(3) 插入数据(部分列)
 var INSERT_DATA = (tableName: string, colums: string, values: string) =>
   `INSERT INTO ${tableName}(${colums}) VALUES (${values});`;
-  
+
 //(4) 删除数据(根据id)
 var DELETE_DATA_BY_ID = (tableName: string, id: string) =>
   `DELETE FROM ${tableName} WHERE id = ${id};`;
 //(5) 删除所有数据
 var DELETE_DATAS = (tableName: string) => `DELETE FROM ${tableName};`;
 //(6) 更新数据条目
-var UPDATE_DATA = (tableName: string, id: string, colum: string, value: string) =>
-  `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
+var UPDATE_DATA = (
+  tableName: string,
+  id: string,
+  colum: string,
+  value: string
+) => `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
 
-  var UPDATE_DATA9 = (tableName: string,colum: string, value: string,id: number) =>
-  `UPDATE ${tableName} SET ${colum} = '${value}' WHERE id = ${id};`;
+var UPDATE_DATAS = (tableName: string, colums: any, id: number) =>
+  `UPDATE ${tableName} SET ${
+    Array.isArray(colums) ? colums.map((key) => key + "=?").join() : colums
+  } WHERE id = ${id};`;
 //(7) 新增表里的行
 const INSERT_DATA_ROW = (tableName: string) => `INSERT INTO ${tableName} SET ?`;
 /************************查询操作相关************************
@@ -58,17 +65,24 @@ const INSERT_DATA_ROW = (tableName: string) => `INSERT INTO ${tableName} SET ?`;
  *************************************************************/
 //(1) 获取用户信息
 // const GET_USER_INFO = `SELECT * FROM users WHERE username=?`
-const GET_TABLE_INFO = (tableName: string, keys: string) => `SELECT * FROM ${tableName} WHERE ${ Array.isArray(keys) ? keys.join('=? and ') : keys }=?`;
+const GET_TABLE_INFO = (tableName: string, keys: string) =>
+  `SELECT * FROM ${tableName} WHERE ${
+    Array.isArray(keys) ? keys.join("=? and ") : keys
+  }=?`;
 
 //(2) 登录
 const LOGIN = () => `SELECT * FROM users WHERE username=?`;
 
 //(3) 查询是否已有重复的
-const GET_REPEAT = (tableName: string, keys: any) => `SELECT * FROM ${tableName} WHERE ${ Array.isArray(keys) ? keys.join('=? or ') : keys }=?`;
+const GET_REPEAT = (tableName: string, keys: any) =>
+  `SELECT * FROM ${tableName} WHERE ${
+    Array.isArray(keys) ? keys.join("=? or ") : keys
+  }=?`;
 //(4) 注册-保存用户
 const SAVE_USER = () => `INSERT INTO users SET ?`;
 //(5) 修改密码
-const UPDATE_USER_INFO = (updateKey: string, whereKey: string) => `UPDATE users set ${updateKey}=? WHERE ${whereKey}=?`;
+const UPDATE_USER_INFO = (updateKey: string, whereKey: string) =>
+  `UPDATE users set ${updateKey}=? WHERE ${whereKey}=?`;
 
 /************************约束/外键/字符集相关************************
  * 约束/外键/字符集相关
@@ -110,6 +124,6 @@ module.exports = {
   GET_REPEAT,
   SAVE_USER,
   UPDATE_USER_INFO,
-  UPDATE_DATA9
+  UPDATE_DATAS,
 };
 // export {}

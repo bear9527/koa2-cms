@@ -1,15 +1,16 @@
 const { query } = require("../db/query");
 // const { formateDate } = require("../utils/tool");
+const { staticBaseUrl } = require("../config");
 const {
   GET_REPEAT,
   INSERT_DATA,
   UPDATE_DATA,
   GET_TABLE_INFO,
-  UPDATE_DATA9,
+  UPDATE_DATAS,
 } = require("../db/sql");
 // 新增分类
 const addCategory = async (ctx: any, next: any) => {
-  console.log('cateReapeatRes',ctx);
+  console.log("cateReapeatRes", ctx);
   const { name, alias, parentCategoryId } = ctx.request.body;
   if (!parentCategoryId) {
     return ctx.cc("请输入parentCategoryId！");
@@ -33,7 +34,7 @@ const addCategory = async (ctx: any, next: any) => {
       `'${name}', '${alias}', '${parentCategoryId}'`
     )
   );
-  
+
   if (cateAddRes.affectedRows === 1) {
     return ctx.cc("创建成功", 0);
   } else {
@@ -43,20 +44,15 @@ const addCategory = async (ctx: any, next: any) => {
 
 // 修改分类
 const editCategory = async (ctx: any, next: any) => {
-  const { id } = ctx.request.body; //, alias, cate_id, img, name
+  const { id, alias, cate_id, img, name } = ctx.request.body; //
   const cateReapeatRes = await query(GET_REPEAT("ev_article_cate", "id"), id);
   if (cateReapeatRes.length === 0) {
     return ctx.cc("未找到目标分类！");
   }
 
-  // var UPDATE_DATA = (tableName: string, id: string, colum: string, value: string) =>
-  // `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
-console.log('111',UPDATE_DATA9("ev_article_cate" ,"name","ddd",18));
-
   const cateEditRes = await query(
-    // UPDATE_DATA("ev_article_cate ", "name, alias, cate_id, img", `'${name}', '${alias}', '${cate_id}', '${img}'`)
-    UPDATE_DATA9("ev_article_cate" ,"name","ddd",18)
-    // UPDATE_DATA("ev_article_cate ", id ,`name`,name)
+    UPDATE_DATAS("ev_article_cate", ["name", "alias", "cate_id", "img"], id),
+    [name, alias, cate_id, img]
   );
   if (cateEditRes.affectedRows === 1) {
     return ctx.cc("修改成功", 0);
@@ -87,16 +83,16 @@ const deleteCategory = async (ctx: any) => {
 // 查询某个路由分类下的所有分类
 const getAllCategory = async (ctx: any) => {
   const { categoryId } = ctx.query;
-  let cateReapeatRes = null
-  if(categoryId){
+  let cateReapeatRes = null;
+  if (categoryId) {
     cateReapeatRes = await query(
       GET_TABLE_INFO("ev_article_cate", ["cate_id", "is_delete"]),
-      [categoryId, '0']
+      [categoryId, "0"]
     );
-  }else{
+  } else {
     cateReapeatRes = await query(
       GET_TABLE_INFO("ev_article_cate", "is_delete"),
-      '0'
+      "0"
     );
   }
 
@@ -107,10 +103,16 @@ const getAllCategory = async (ctx: any) => {
     };
     return;
   }
-
+  let newData = cateReapeatRes.map((item: any) => {
+    const preUrl = (item.img).includes("http") ? item.img : staticBaseUrl + item.img
+    return {
+      ...item,
+      img: item.img ? preUrl : item.img,
+    };
+  });
   ctx.body = {
     message: "成功",
-    data: cateReapeatRes,
+    data: newData,
   };
 };
 
@@ -142,9 +144,9 @@ const addArticle = async (ctx: any, next: any) => {
   if (!bodyData.categoryId) {
     return ctx.cc("请输入父id！");
   }
-  
-  const author_id = ctx.state.user.id
-  const state = '已发布'
+
+  const author_id = ctx.state.user.id;
+  const state = "已发布";
   const articleAddRes = await query(
     INSERT_DATA(
       "ev_articles ",

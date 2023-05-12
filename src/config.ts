@@ -1,3 +1,4 @@
 module.exports = {
-  jwtSecretKey: 'mmm'
+  jwtSecretKey: 'mmm',
+  staticBaseUrl: 'http://localhost:9000'
 }
