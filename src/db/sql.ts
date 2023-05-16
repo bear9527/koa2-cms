@@ -44,6 +44,14 @@ var INSERT_DATA = (tableName: string, colums: string, values: string) =>
 //(4) 删除数据(根据id)
 var DELETE_DATA_BY_ID = (tableName: string, id: string) =>
   `DELETE FROM ${tableName} WHERE id = ${id};`;
+// 批量删除（逻辑删）
+var UPDATE_DATA_BY_IDS = (
+  tableName: string,
+  colum: string,
+  value: number,
+  ids: []
+) => `UPDATE ${tableName} SET ${colum} = ${value} WHERE id IN (${ids});`;
+
 //(5) 删除所有数据
 var DELETE_DATAS = (tableName: string) => `DELETE FROM ${tableName};`;
 //(6) 更新数据条目
@@ -54,6 +62,7 @@ var UPDATE_DATA = (
   value: string
 ) => `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
 
+// 修改某条数据的多个字段
 var UPDATE_DATAS = (tableName: string, colums: any, id: number) =>
   `UPDATE ${tableName} SET ${
     Array.isArray(colums) ? colums.map((key) => key + "=?").join() : colums
@@ -118,6 +127,7 @@ module.exports = {
   DELETE_DATAS,
   UPDATE_DATA,
   INSERT_DATA_ROW,
+  UPDATE_DATA_BY_IDS,
   //查询相关
   GET_TABLE_INFO,
   LOGIN,

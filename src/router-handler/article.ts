@@ -7,20 +7,21 @@ const {
   UPDATE_DATA,
   GET_TABLE_INFO,
   UPDATE_DATAS,
+  UPDATE_DATA_BY_IDS
 } = require("../db/sql");
 // 新增分类
 const addCategory = async (ctx: any, next: any) => {
   console.log("cateReapeatRes", ctx);
-  const { name, alias, parentCategoryId } = ctx.request.body;
-  if (!parentCategoryId) {
-    return ctx.cc("请输入parentCategoryId！");
+  const { title, alias, cate_id, img } = ctx.request.body;
+  if (!cate_id) {
+    return ctx.cc("请输入cate_id！");
   }
   const cateReapeatRes = await query(
-    GET_REPEAT("ev_article_cate", ["name", "alias"]),
-    [name, alias]
+    GET_REPEAT("ev_article_cate", ["title", "alias"]),
+    [title, alias]
   );
   if (cateReapeatRes.length > 0) {
-    if (name === cateReapeatRes[0].name) {
+    if (title === cateReapeatRes[0].title) {
       return ctx.cc("分类名重复,请重新输入！");
     }
     if (alias === cateReapeatRes[0].alias) {
@@ -30,8 +31,8 @@ const addCategory = async (ctx: any, next: any) => {
   const cateAddRes = await query(
     INSERT_DATA(
       "ev_article_cate",
-      "name, alias, cate_id",
-      `'${name}', '${alias}', '${parentCategoryId}'`
+      "title, alias, cate_id, img",
+      `'${title}', '${alias}', '${cate_id}', '${img}'`
     )
   );
 
@@ -44,15 +45,15 @@ const addCategory = async (ctx: any, next: any) => {
 
 // 修改分类
 const editCategory = async (ctx: any, next: any) => {
-  const { id, alias, cate_id, img, name } = ctx.request.body; //
+  const { id, alias, cate_id, img, title } = ctx.request.body; //
   const cateReapeatRes = await query(GET_REPEAT("ev_article_cate", "id"), id);
   if (cateReapeatRes.length === 0) {
     return ctx.cc("未找到目标分类！");
   }
 
   const cateEditRes = await query(
-    UPDATE_DATAS("ev_article_cate", ["name", "alias", "cate_id", "img"], id),
-    [name, alias, cate_id, img]
+    UPDATE_DATAS("ev_article_cate", ["title", "alias", "cate_id", "img"], id),
+    [title, alias, cate_id, img]
   );
   if (cateEditRes.affectedRows === 1) {
     return ctx.cc("修改成功", 0);
@@ -80,6 +81,20 @@ const deleteCategory = async (ctx: any) => {
   }
 };
 
+// 批量删除分类
+const batchDeleteCategory = async (ctx: any) => {
+  const { ids } = ctx.request.body;
+
+  const cateDeleteRes = await query(
+    UPDATE_DATA_BY_IDS("ev_article_cate", "is_delete", 1,ids)
+  );
+  if (cateDeleteRes.affectedRows > 0) {
+    return ctx.cc("批量删除成功", 0);
+  } else {
+    return ctx.cc("批量删除失败", 1);
+  }
+};
+
 // 查询某个路由分类下的所有分类
 const getAllCategory = async (ctx: any) => {
   const { categoryId } = ctx.query;
@@ -104,7 +119,7 @@ const getAllCategory = async (ctx: any) => {
     return;
   }
   let newData = cateReapeatRes.map((item: any) => {
-    const preUrl = (item.img).includes("http") ? item.img : staticBaseUrl + item.img
+    const preUrl = (item.img && (item.img).includes("http")) ? item.img : staticBaseUrl + item.img
     return {
       ...item,
       img: item.img ? preUrl : item.img,
@@ -174,5 +189,6 @@ module.exports = {
   getAllCategory,
   getAllRouterCategory,
   addArticle,
+  batchDeleteCategory,
 };
 export {};
