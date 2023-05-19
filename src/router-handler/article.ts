@@ -97,12 +97,12 @@ const batchDeleteCategory = async (ctx: any) => {
 
 // 查询某个路由分类下的所有分类
 const getAllCategory = async (ctx: any) => {
-  const { categoryId } = ctx.query;
+  const { cate_id } = ctx.query;
   let cateReapeatRes = null;
-  if (categoryId) {
+  if (cate_id) {
     cateReapeatRes = await query(
       GET_TABLE_INFO("ev_article_cate", ["cate_id", "is_delete"]),
-      [categoryId, "0"]
+      [cate_id, "0"]
     );
   } else {
     cateReapeatRes = await query(
