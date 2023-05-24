@@ -4,6 +4,7 @@ const categoryName = joi.string().required()
 const categoryAlias = joi.string().alphanum().required()
 
 const id = joi.number().integer().min(1).required()
+const idNotRequired = joi.number().integer().min(1)
 
 const article_title = joi.string().required()
 const article_cate_id = joi.number().integer().min(1)
@@ -16,17 +17,17 @@ const article_pub_date = joi.string()
 // 创建分类
 const articleCategorySchema = joi.object({
   title: categoryName,
-  alias: categoryAlias,
+  description: categoryAlias,
   img: article_pic,
-  cate_id: id
+  categoryId: id
 });
 
 // 编辑分类
 const editCategorySchema = joi.object({
   id: id,
   title: categoryName,
-  cate_id: id,
-  alias: categoryAlias,
+  categoryId: id,
+  description: categoryAlias,
   img: article_pic,
 });
 
@@ -45,6 +46,7 @@ exports.article_id_category_schema = {
 }
 
 const articleSchema = joi.object( {
+  id: idNotRequired,
   title: article_title,
   description: article_description,
   content: article_content,

@@ -29,7 +29,11 @@ router.get('/getAllRouterCategory', articleHandler.getAllRouterCategory)
 // 添加某个分类下的文章
 router.post('/addArticle', schema('post', articleSchema), articleHandler.addArticle)
 
+// 修改某个分类下的文章
+router.post('/editArticle', schema('post', articleSchema), articleHandler.editArticle)
 
+// 查询某个分类下的文章
+router.get('/getArticleList', articleHandler.getArticleList)
 
 module.exports = router
 export {}
