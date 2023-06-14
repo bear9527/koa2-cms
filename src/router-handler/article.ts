@@ -166,16 +166,18 @@ const addArticle = async (ctx: any, next: any) => {
 
   const createUser = ctx.state.user.id;
   const state = "publish";
+  const createDate = formateDate(new Date());
   const articleAddRes = await query(
     INSERT_DATA(
       "ev_articles ",
-      "title, description, content, state, categoryId, articlePic, createUser",
+      "title, description, content, state, categoryId, articlePic, createDate, createUser",
       `'${bodyData.title}', 
       '${bodyData.description}', 
       '${bodyData.content}', 
       '${state}', 
       '${bodyData.categoryId}', 
       '${bodyData.articlePic}',
+      '${createDate}',
       '${createUser}'`
     )
   );

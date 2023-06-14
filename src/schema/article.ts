@@ -1,7 +1,8 @@
 const joi = require("joi")
 
 const categoryName = joi.string().required()
-const categoryAlias = joi.string().alphanum().required()
+const categoryAlias = joi.string().required()
+const img = joi.string().allow('').allow(null)
 
 const id = joi.number().integer().min(1).required()
 const idNotRequired = joi.number().integer().min(1)
@@ -28,7 +29,7 @@ const editCategorySchema = joi.object({
   title: categoryName,
   categoryId: id,
   description: categoryAlias,
-  img: article_pic,
+  img: img,
 });
 
 // 删除分类
