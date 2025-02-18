@@ -36,10 +36,14 @@ var INSERT_DATAS = (tableName, values) => `INSERT INTO ${tableName} VALUES (${va
 var INSERT_DATA = (tableName, colums, values) => `INSERT INTO ${tableName}(${colums}) VALUES (${values});`;
 //(4) 删除数据(根据id)
 var DELETE_DATA_BY_ID = (tableName, id) => `DELETE FROM ${tableName} WHERE id = ${id};`;
+// 批量删除（逻辑删）
+var UPDATE_DATA_BY_IDS = (tableName, colum, value, ids) => `UPDATE ${tableName} SET ${colum} = ${value} WHERE id IN (${ids});`;
 //(5) 删除所有数据
 var DELETE_DATAS = (tableName) => `DELETE FROM ${tableName};`;
 //(6) 更新数据条目
 var UPDATE_DATA = (tableName, id, colum, value) => `UPDATE ${tableName} SET ${colum} = ${value} WHERE id = ${id};`;
+// 修改某条数据的多个字段
+var UPDATE_DATAS = (tableName, colums, id) => `UPDATE ${tableName} SET ${Array.isArray(colums) ? colums.map((key) => key + "=?").join() : colums} WHERE id = ${id};`;
 //(7) 新增表里的行
 const INSERT_DATA_ROW = (tableName) => `INSERT INTO ${tableName} SET ?`;
 /************************查询操作相关************************
@@ -47,11 +51,11 @@ const INSERT_DATA_ROW = (tableName) => `INSERT INTO ${tableName} SET ?`;
  *************************************************************/
 //(1) 获取用户信息
 // const GET_USER_INFO = `SELECT * FROM users WHERE username=?`
-const GET_TABLE_INFO = (tableName, keys) => `SELECT * FROM ${tableName} WHERE ${Array.isArray(keys) ? keys.join('=? and ') : keys}=?`;
+const GET_TABLE_INFO = (tableName, keys) => `SELECT * FROM ${tableName} WHERE ${Array.isArray(keys) ? keys.join("=? and ") : keys}=?`;
 //(2) 登录
 const LOGIN = () => `SELECT * FROM users WHERE username=?`;
 //(3) 查询是否已有重复的
-const GET_REPEAT = (tableName, keys) => `SELECT * FROM ${tableName} WHERE ${Array.isArray(keys) ? keys.join('=? or ') : keys}=?`;
+const GET_REPEAT = (tableName, keys) => `SELECT * FROM ${tableName} WHERE ${Array.isArray(keys) ? keys.join("=? or ") : keys}=?`;
 //(4) 注册-保存用户
 const SAVE_USER = () => `INSERT INTO users SET ?`;
 //(5) 修改密码
@@ -89,12 +93,14 @@ module.exports = {
     DELETE_DATAS,
     UPDATE_DATA,
     INSERT_DATA_ROW,
+    UPDATE_DATA_BY_IDS,
     //查询相关
     GET_TABLE_INFO,
     LOGIN,
     GET_REPEAT,
     SAVE_USER,
-    UPDATE_USER_INFO
+    UPDATE_USER_INFO,
+    UPDATE_DATAS,
 };
 // export {}
 //# sourceMappingURL=sql.js.map

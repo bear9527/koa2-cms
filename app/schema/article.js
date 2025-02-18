@@ -1,31 +1,38 @@
 "use strict";
 const joi = require("joi");
 const categoryName = joi.string().required();
-const categoryAlias = joi.string().alphanum().required();
+const categoryAlias = joi.string();
+const img = joi.string().allow('').allow(null);
 const id = joi.number().integer().min(1).required();
+const idNotRequired = joi.number().integer().min(1);
 const article_title = joi.string().required();
-const article_cate_id = joi.number().integer().min(1).required();
+const article_cate_id = joi.number().integer().min(1);
 const article_description = joi.string().max(255);
 const article_content = joi.string().required().allow('');
 const article_state = joi.string().valid("已发布", "草稿").required();
-const article_pic = joi.string();
+const article_pic = joi.string().allow('');
 const article_pub_date = joi.string();
 // 创建分类
 const articleCategorySchema = joi.object({
-    name: categoryName,
-    alias: categoryAlias,
-    parentCategoryId: article_cate_id
+    title: categoryName,
+    description: categoryAlias,
+    img: article_pic,
+    categoryId: id
 });
 // 编辑分类
 const editCategorySchema = joi.object({
     id: id,
-    name: categoryName,
-    alias: categoryAlias,
+    title: categoryName,
+    categoryId: id,
+    description: categoryAlias,
+    img: img,
 });
 // 删除分类
-const deleteCategorySchema = joi.object({
-    id: id
-});
+// const deleteCategorySchema = joi.object({
+//   query:{
+//     id: id
+//   }
+// });
 // 删除分类
 exports.article_id_category_schema = {
     params: {
@@ -33,6 +40,7 @@ exports.article_id_category_schema = {
     }
 };
 const articleSchema = joi.object({
+    id: idNotRequired,
     title: article_title,
     description: article_description,
     content: article_content,
@@ -45,7 +53,7 @@ const articleSchema = joi.object({
 module.exports = {
     articleCategorySchema,
     editCategorySchema,
-    deleteCategorySchema,
+    // deleteCategorySchema,
     articleSchema
 };
 //# sourceMappingURL=article.js.map

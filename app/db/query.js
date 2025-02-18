@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const mysqlConfig = require("./mysql.config");
 const db = mysql.createPool(mysqlConfig);
 const query = (sql, val) => {

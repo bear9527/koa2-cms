@@ -1,5 +1,6 @@
 "use strict";
 module.exports = {
-    jwtSecretKey: 'mmm'
+    jwtSecretKey: 'mmm',
+    staticBaseUrl: 'http://localhost:9000'
 };
 //# sourceMappingURL=config.js.map

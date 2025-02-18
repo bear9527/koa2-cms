@@ -8,3 +8,6 @@ declare const koaJwt: any;
 declare const config: any;
 declare const app: any;
 declare const koaStatic: any;
+declare let server: any;
+declare const ws: any;
+declare const wws: any;

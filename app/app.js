@@ -58,7 +58,15 @@ app.use(koaJwt({ secret: config.jwtSecretKey }).unless({ path: [/^\/user/, /^\/p
 // app.use(controller())
 // app.use(userRouter.routes()); // 启动路由
 userRouter(app);
-app.listen(9000);
+let server = app.listen(9000);
 console.log("http://localhost:" + 9000);
 // export {}; // 为了解决报相同变量名问题所加
+const ws = require('ws');
+const wws = new ws.Server({ server });
+console.log('wws', wws);
+wws.on('connection', function connection(ws) {
+    ws.on('message', function incoming(message) {
+        console.log('message', message);
+    });
+});
 //# sourceMappingURL=app.js.map

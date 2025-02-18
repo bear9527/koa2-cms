@@ -21,8 +21,10 @@ declare var QUERY_DATAS: (tableName: string) => string;
 declare var INSERT_DATAS: (tableName: string, values: string) => string;
 declare var INSERT_DATA: (tableName: string, colums: string, values: string) => string;
 declare var DELETE_DATA_BY_ID: (tableName: string, id: string) => string;
+declare var UPDATE_DATA_BY_IDS: (tableName: string, colum: string, value: number, ids: []) => string;
 declare var DELETE_DATAS: (tableName: string) => string;
 declare var UPDATE_DATA: (tableName: string, id: string, colum: string, value: string) => string;
+declare var UPDATE_DATAS: (tableName: string, colums: any, id: number) => string;
 declare const INSERT_DATA_ROW: (tableName: string) => string;
 /************************查询操作相关************************
  * 数据查询相关 DQL

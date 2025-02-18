@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Router = require('koa-router');
-const router = new Router({ prefix: "/my" });
+const router = new Router({ prefix: "/my" }); // 路由前缀
 const userHandler = require("../router-handler/userInfo");
 // 导入 Joi 来定义验证规则
 const schema = require("../schema");

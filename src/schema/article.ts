@@ -1,7 +1,7 @@
 const joi = require("joi")
 
 const categoryName = joi.string().required()
-const categoryAlias = joi.string().required()
+const categoryAlias = joi.string()
 const img = joi.string().allow('').allow(null)
 
 const id = joi.number().integer().min(1).required()
