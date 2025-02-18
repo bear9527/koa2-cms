@@ -71,14 +71,3 @@ console.log("http://localhost:" + 9000);
 
 
 
-
-const ws = require('ws');
-const wws = new ws.Server({ server });
-console.log('wws',wws);
-
-wws.on('connection', function connection(ws: any){
-  ws.on('message', function incoming(message: any){
-    console.log('message', message);
-    
-  })
-})
