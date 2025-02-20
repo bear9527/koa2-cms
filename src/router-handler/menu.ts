@@ -4,10 +4,10 @@ const { staticBaseUrl } = require("../config");
 const {
   GET_REPEAT,
   INSERT_DATA,
-  UPDATE_DATA,
+  // UPDATE_DATA,
   GET_TABLE_INFO,
   UPDATE_DATAS,
-  UPDATE_DATA_BY_IDS,
+  // UPDATE_DATA_BY_IDS,
 } = require("../db/sql");
 
 // 新增菜单
@@ -89,7 +89,7 @@ const getMenus = async (ctx: any) => {
 // 查询某个菜单信息
 const getMenuInfo = async (ctx: any, next: any) => {
   
-  const { id } = ctx.request.body; //
+  const { id } = ctx.query; //
   console.log('id',id);
   const cateReapeatRes = await query(GET_REPEAT("ev_menus", "id"), id);
   if (cateReapeatRes.length === 0) {
@@ -97,17 +97,17 @@ const getMenuInfo = async (ctx: any, next: any) => {
   }else{
     ctx.body = {
       message: "成功",
-      data: cateReapeatRes,
+      data: cateReapeatRes[0],
     };
   }
 }
 
-// 修改分类
+// 修改菜单
 const editMenu = async (ctx: any, next: any) => {
   const { id, description, parentId, img, title } = ctx.request.body; //
   const cateReapeatRes = await query(GET_REPEAT("ev_menus", "id"), id);
   if (cateReapeatRes.length === 0) {
-    return ctx.cc("未找到目标分类！");
+    return ctx.cc("未找到目标菜单！");
   }
 
   const cateEditRes = await query(
@@ -125,38 +125,38 @@ const editMenu = async (ctx: any, next: any) => {
   }
 };
 
-// 删除分类
-const deleteCategory = async (ctx: any) => {
-  const { id } = ctx.query;
-  const cateReapeatRes = await query(GET_REPEAT("ev_menus", "id"), id);
-  if (cateReapeatRes.length === 0) {
-    return ctx.cc("未找到目标分类！");
-  }
+// // 删除分类
+// const deleteCategory = async (ctx: any) => {
+//   const { id } = ctx.query;
+//   const cateReapeatRes = await query(GET_REPEAT("ev_menus", "id"), id);
+//   if (cateReapeatRes.length === 0) {
+//     return ctx.cc("未找到目标分类！");
+//   }
 
-  const cateDeleteRes = await query(
-    UPDATE_DATA("ev_menus", id, "deleted", 1)
-  );
-  // const cateDeleteRes = await query(DELETE_DATA_BY_ID("ev_menus", id))
-  if (cateDeleteRes.affectedRows === 1) {
-    return ctx.cc("删除成功", 0);
-  } else {
-    return ctx.cc("删除失败", 1);
-  }
-};
+//   const cateDeleteRes = await query(
+//     UPDATE_DATA("ev_menus", id, "deleted", 1)
+//   );
+//   // const cateDeleteRes = await query(DELETE_DATA_BY_ID("ev_menus", id))
+//   if (cateDeleteRes.affectedRows === 1) {
+//     return ctx.cc("删除成功", 0);
+//   } else {
+//     return ctx.cc("删除失败", 1);
+//   }
+// };
 
-// 批量删除分类
-const batchDeleteCategory = async (ctx: any) => {
-  const { ids } = ctx.request.body;
+// // 批量删除分类
+// const batchDeleteCategory = async (ctx: any) => {
+//   const { ids } = ctx.request.body;
 
-  const cateDeleteRes = await query(
-    UPDATE_DATA_BY_IDS("ev_menus", "deleted", 1, ids)
-  );
-  if (cateDeleteRes.affectedRows > 0) {
-    return ctx.cc("批量删除成功", 0);
-  } else {
-    return ctx.cc("批量删除失败", 1);
-  }
-};
+//   const cateDeleteRes = await query(
+//     UPDATE_DATA_BY_IDS("ev_menus", "deleted", 1, ids)
+//   );
+//   if (cateDeleteRes.affectedRows > 0) {
+//     return ctx.cc("批量删除成功", 0);
+//   } else {
+//     return ctx.cc("批量删除失败", 1);
+//   }
+// };
 
 
 // 查询所有路由分类
@@ -305,11 +305,11 @@ module.exports = {
   editMenu,
   getMenuInfo,
 
-  deleteCategory,
+  // deleteCategory,
   getMenus,
   getAllRouterCategory,
   addArticle,
-  batchDeleteCategory,
+  // batchDeleteCategory,
   getArticleList,
   editArticle,
 };

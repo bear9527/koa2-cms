@@ -15,7 +15,7 @@ const WebSocket = require('ws')
      ws.on('message',function incoming(message){
          console.log('received: %s from %s',message,clientName)
          server.clients.forEach(function each(client){
-         console.log('client',client)
+        //  console.log('client',client)
          if(client.readyState === WebSocket.OPEN){
                  client.send(clientName +" -> " + message + '!')
              }
